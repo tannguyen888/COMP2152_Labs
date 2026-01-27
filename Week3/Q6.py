@@ -17,7 +17,16 @@ print("All product categories:", union_set )
 
 prices = [price for price, quantity in inventory.values()]
 print("Price List:", prices)
-    price.sort()
-    print("Sorted prices:", price)
-    print("Lowest price:", price[1])
-    print("Highest price:", price[4])
+prices.sort()
+print("Sorted prices:", prices)
+print("Lowest price:", prices[1])
+print("Highest price:", prices[3])
+
+print("===Final Inventory===")
+inventory["Headphones"] = (49.99, 20)
+price, _ = inventory["Mouse"]
+inventory["Mouse"] = (price, 12)
+del inventory["Monitor"]
+print("=== Updated Inventory ===")
+for item, (price, quantity) in inventory.items():
+    print(f"{item}: ${price} - Quantity: {quantity}")
