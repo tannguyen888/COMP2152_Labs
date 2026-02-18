@@ -1,13 +1,13 @@
 # ============================================================
 #  WEEK 06 LAB: NETWORK DIAGNOSTIC LOGGER
 #  COMP2152
-#  [Your Name Here]
+#  [Gia Duc Can]
 # ============================================================
 #
 #  This program runs network commands (ping, nslookup, ifconfig),
 #  parses their output, and logs results to files.
 #
-#  YOUR TASKS (3 tasks — look for *** TASK *** markers):
+#  YOUR TASKS (3 tasks — look for * TASK * markers):
 #
 #  Task 1: Complete write_to_log() and read_log()
 #          — Write to a text file in append mode
@@ -16,6 +16,7 @@
 #  Task 2: Complete log_to_csv() and read_csv_log()
 #          — Write a row to a CSV file
 #          — Read and display CSV rows
+
 #
 #  Task 3: Complete safe_read_log()
 #          — Add try/except/finally for missing files
@@ -168,7 +169,7 @@ def parse_arp_table(output):
 #  SECTION C: File I/O — Text Files
 # ============================================================
 #
-#  *** TASK 1 *** Complete these two functions:
+#  * TASK 1 * Complete these two functions:
 #
 #  Hints:
 #    - write_to_log: open file in APPEND mode ("a")
@@ -181,19 +182,14 @@ def parse_arp_table(output):
 
 def write_to_log(filename, entry):
     """Append a log entry to a text file."""
-    # *** YOUR CODE HERE ***
-    # Open the file in append mode ("a") using a with statement
-    # Write the entry + "\n" to the file
-    pass
+    with open(filename, "a") as file:
+        file.write(entry + "\n")
 
 
 def read_log(filename):
     """Read and return the entire contents of a log file."""
-    # *** YOUR CODE HERE ***
-    # Open the file in read mode ("r") using a with statement
-    # Return the result of file.read()
-    pass
-
+    with open(filename, "r") as file:
+        return file.read()
 
 # This function is COMPLETE — it uses write_to_log() above
 def log_command_result(command_name, target, output, filename):
@@ -209,7 +205,7 @@ def log_command_result(command_name, target, output, filename):
 #  SECTION D: File I/O — CSV Files
 # ============================================================
 #
-#  *** TASK 2 *** Complete these two functions:
+#  * TASK 2 * Complete these two functions:
 #
 #  Hints:
 #    - log_to_csv: open file in append mode with newline=""
@@ -226,19 +222,18 @@ LOG_FILE = "diagnostics.csv"
 def log_to_csv(filename, command, target, result, status):
     """Append one row to the CSV log file with a timestamp."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    # *** YOUR CODE HERE ***
-    # Open filename in append mode ("a") with newline=""
-    # Create a csv.writer(file)
-    # Write one row: [timestamp, command, target, result, status]
-    pass
+    with open(filename, "a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([timestamp, command, target, result, status])
+
 
 
 def read_csv_log(filename):
     """Read and display all rows from the CSV log file."""
-    # *** YOUR CODE HERE ***
-    # Open filename in read mode ("r") with newline=""
-    # Create a csv.reader(file)
-    # Loop through rows and print: " | ".join(row)
+    with open(filename, "r", newline="") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            print(" | ".join(row))
     pass
 
 
@@ -286,7 +281,7 @@ def analyze_csv_log(filename):
 #  SECTION E: Exception Handling
 # ============================================================
 #
-#  *** TASK 3 *** Complete safe_read_log():
+#  * TASK 3 * Complete safe_read_log():
 #
 #  Hints:
 #    - try: open and read the file
@@ -330,18 +325,14 @@ def safe_nslookup(domain):
 
 def safe_read_log(filename):
     """Read a log file with error handling for missing files."""
-    # *** YOUR CODE HERE ***
-    # try:
-    #     open the file in read mode
-    #     read the content
-    #     if content is empty: print "Log file is empty." and return ""
-    #     else: return the content
-    # except FileNotFoundError:
-    #     print "No log file found. Run a diagnostic first."
-    #     return ""
-    # finally:
-    #     print "Log read attempt completed."
-    pass
+    try:
+        with open(filename, "r", newline="") as file:
+            return file.read()
+    except FileNotFoundError:
+        print("No log file found. Run a diagnostic first.")
+        return ""
+    finally:
+        print("Log read attempt completed.")
 
 
 def get_valid_input(prompt, valid_options):
@@ -509,5 +500,5 @@ def main():
 #  TEST YOUR WORK
 # ============================================================
 # After completing Tasks 1-3, uncomment the line below to run:
-# main()
+main()
 # ============================================================
