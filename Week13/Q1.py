@@ -37,7 +37,7 @@ def create_sample_data():
 #   Open the file, use csv.DictReader to read it
 #   Return a list of dictionaries (one per row)
 def load_findings(filename):
-    with open("fileman","r") as file:
+    with open(filename,"r") as file:
       read = csv.DictReader(file)
       return list(read)
       
